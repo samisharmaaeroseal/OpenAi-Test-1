@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "OpenAi Test 1", "OpenAi Test 1.pyproj", "{D18F66CD-9A41-4B7C-8A4C-66F252EC36EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D18F66CD-9A41-4B7C-8A4C-66F252EC36EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D18F66CD-9A41-4B7C-8A4C-66F252EC36EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F4F0375-A1B0-49BF-B1EA-D73A95C0C131}
+	EndGlobalSection
+EndGlobal
