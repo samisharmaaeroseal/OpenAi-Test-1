@@ -4,14 +4,26 @@ import openai
 import os
 import pandas as pd
 import numpy as np
+import time
 
-from config import TEXT_EMBEDDING_CHUNK_SIZE, EMBEDDINGS_MODEL
-from database import load_vectors
+from Config import TEXT_EMBEDDING_CHUNK_SIZE, EMBEDDINGS_MODEL
+from Database import load_vectors
 
 # OpenAI Authentication
 # openai.organization = "org-EDaNlHlI0Z0hKNL7YIvYlrVm"
 key = 'OPENAI_API_KEY'
 openai.api_key = os.getenv(key)
+
+
+# Define a function that adds a delay to a Completion API call
+def delayed_get_embeddings(delay_in_seconds, text_chunks, engine):
+    """Delay a completion by a specified amount of time."""
+
+    # Sleep for the delay
+    time.sleep(delay_in_seconds)
+
+    # Call the Completion API and return the result
+    return get_embeddings(text_chunks, engine)
 
 
 def get_col_average_from_list_of_lists(list_of_lists):
@@ -31,7 +43,9 @@ def create_embeddings_for_text(text, tokenizer):
     token_chunks = list(chunks(text, TEXT_EMBEDDING_CHUNK_SIZE, tokenizer))
     text_chunks = [tokenizer.decode(chunk) for chunk in token_chunks]
 
+    delay_in_seconds = 1
     embeddings_response = get_embeddings(text_chunks, EMBEDDINGS_MODEL)
+    #embeddings_response = delayed_get_embeddings(delay_in_seconds, text_chunks, EMBEDDINGS_MODEL)
     embeddings = [embedding["embedding"] for embedding in embeddings_response]
     text_embeddings = list(zip(text_chunks, embeddings))
 

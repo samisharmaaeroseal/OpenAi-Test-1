@@ -1,35 +1,52 @@
 import streamlit as st
 from streamlit_chat import message
 
-from database import get_redis_connection
-from setUpRedis import RetrievalAssistant, Message
+from Database import get_redis_connection
+from Assistants import RetrievalAssistant, Message
 
 # Initialise database
 
 ## Initialise Redis connection
 redis_client = get_redis_connection()
 
-# Set instruction
 
 # System prompt requiring Question to be extracted from the user
 system_prompt = '''
-You are a helpful Aeroseal product knowledge base assistant. You need to capture a Question from each customer.
-The Question is their query on how to use the Residential and Commercial Aeroseal products.
-Think about this step by step:
-- The user will ask a Question
-- Once you have the Question, say "searching for answers".
+You are a helpful Aeroseal product knowledge base assistant. 
 
-Example:
+Begin by introducing yourself and asking the user for the product being used. 
 
-User: What necessary safety procedures must I follow?
+Once you have the product being used, ask "What can I help you with?"
 
-Assistant: Searching for answers.
+Use the product being used to answer any questions the dealer has.
+
+Once you know the product, say "Thank you". Answer all following questions with this information.
+
+Example 1:
+
+User: How do I know when to stop sealing?
+
+Assistant: I can help you with that. Which AeroSeal product are you using?
+
+User: HSC 4
+
+Assistant: Thank you. Sealing should be terminated in the following conditions:
+
+            1. Duct leakage has been reduced below the target level
+            2. Fan flow cannot be maintained above 70 cfm due to duct pressure constraints
+            3. duct pressure has reached 600 Pa
+            4. graph shows a "flat-line" that cannot be remedied
+
+User: How frequently should I check the sealing progress
+
+Assistant: Using HSC, be sure to check progress of the sealing job every 10 minutes
+
 '''
 
-### CHATBOT APP
+# Streamlit Browser for ChatBot App
 
 st.set_page_config(
-    page_title="Streamlit Chat - Demo",
+    page_title="Streamlit Chat",
     page_icon=":robot:"
 )
 

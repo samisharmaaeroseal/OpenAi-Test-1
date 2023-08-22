@@ -7,14 +7,12 @@ from redis.commands.search.field import VectorField
 from redis.commands.search.field import TextField, NumericField
 from redis.commands.search.query import Query
 
-from config import EMBEDDINGS_MODEL, PREFIX, VECTOR_FIELD_NAME
+from Config import EMBEDDINGS_MODEL, PREFIX, VECTOR_FIELD_NAME
 
 
 # OpenAI Authentication
 key = 'OPENAI_API_KEY'
 openai.api_key = os.getenv(key)
-
-
 
 
 # Get a Redis connection
