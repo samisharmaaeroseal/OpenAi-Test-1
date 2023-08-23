@@ -1,4 +1,3 @@
-
 import openai
 import os
 import requests
@@ -30,6 +29,7 @@ pd.set_option('display.max_colwidth', 0)
 
 data_dir = os.path.join(os.curdir, 'data')
 pdf_files = sorted([x for x in os.listdir(data_dir)])
+pdf_files
 
 #Importing from Redis
 from redis import Redis
@@ -85,21 +85,23 @@ except Exception as e:
         fields = fields,
         definition = IndexDefinition(prefix=[PREFIX], index_type=IndexType.HASH)
     )  
-    # Initialise tokenizer
-    # Tiktoken is a Byte-Pair Encoding which compresses texts and is the OpenAI tokenizer for training models
-    tokenizer = tiktoken.get_encoding("cl100k_base")
 
-    # Process each PDF file and prepare for embedding
-    for pdf_file in pdf_files:
+
+# Initialise tokenizer
+# Tiktoken is a Byte-Pair Encoding which compresses texts and is the OpenAI tokenizer for training models
+tokenizer = tiktoken.get_encoding("cl100k_base")
+
+# Process each PDF file and prepare for embedding
+for pdf_file in pdf_files:
     
-        pdf_path = os.path.join(data_dir,pdf_file)
-        print(pdf_path)
+    pdf_path = os.path.join(data_dir,pdf_file)
+    print(pdf_path)
     
-        # Extract the raw text from each PDF using textract
-        text = textract.process(pdf_path, method = 'pdfminer')
+    # Extract the raw text from each PDF using textract
+    text = textract.process(pdf_path, method = 'pdfminer')
     
-        # Chunk each document, embed the contents and load to Redis
-        handle_file_string((pdf_file,text.decode("utf-8")),tokenizer,redis_client,VECTOR_FIELD_NAME,INDEX_NAME)
+    # Chunk each document, embed the contents and load to Redis
+    handle_file_string((pdf_file,text.decode("utf-8")),tokenizer,redis_client,VECTOR_FIELD_NAME,INDEX_NAME)
 
 
 
@@ -140,7 +142,7 @@ class RetrievalAssistant:
             )
             
             response_message = Message(completion['choices'][0]['message']['role'],completion['choices'][0]['message']['content'])
-            return response_message
+            return response_message.message()
             
         except Exception as e:
             
@@ -156,12 +158,12 @@ class RetrievalAssistant:
     #Message objects are of the form role: "" content: ""
     def ask_assistant(self, next_user_prompt):
         [self.conversation_history.append(x) for x in next_user_prompt]
-        assistant_response = self._get_assistant_response(self.conversation_history)
         
         question_extract = openai.Completion.create(model=COMPLETIONS_MODEL,prompt=f"Extract the user's latest question from this conversation : {self.conversation_history}. Extract the question as a sentence ")
         search_result = self._get_search_results(question_extract['choices'][0]['text'])
             
         self.conversation_history.insert(-1,{"role": 'system',"content": f"Answer the user's question using this content: {search_result}. If you cannot answer the question, say 'Sorry, I don't know the answer to this one'"})
+        assistant_response = self._get_assistant_response(self.conversation_history)
 
         print(next_user_prompt)
         print(assistant_response)

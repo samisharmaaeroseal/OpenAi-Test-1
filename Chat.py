@@ -9,44 +9,22 @@ from Assistants import RetrievalAssistant, Message
 ## Initialise Redis connection
 redis_client = get_redis_connection()
 
+# Set instruction
 
 # System prompt requiring Question to be extracted from the user
 system_prompt = '''
-You are a helpful Aeroseal product knowledge base assistant. 
-
-Begin by introducing yourself and asking the user for the product being used. 
-
-Once you have the product being used, ask "What can I help you with?"
-
-Use the product being used to answer any questions the dealer has.
-
-Once you know the product, say "Thank you". Answer all following questions with this information.
-
-Example 1:
-
-User: How do I know when to stop sealing?
-
-Assistant: I can help you with that. Which AeroSeal product are you using?
-
-User: HSC 4
-
-Assistant: Thank you. Sealing should be terminated in the following conditions:
-
-            1. Duct leakage has been reduced below the target level
-            2. Fan flow cannot be maintained above 70 cfm due to duct pressure constraints
-            3. duct pressure has reached 600 Pa
-            4. graph shows a "flat-line" that cannot be remedied
-
-User: How frequently should I check the sealing progress
-
-Assistant: Using HSC, be sure to check progress of the sealing job every 10 minutes
+You are a helpful Aeroseal knowledge base assistant. You need to capture a Question from each customer.
+The Question is their query on usiong Aeroseal products.
+Think about this step by step:
+- The user will ask a Question
+- You will generate and respond with the correct answer
 
 '''
 
-# Streamlit Browser for ChatBot App
+### CHATBOT APP
 
 st.set_page_config(
-    page_title="Streamlit Chat",
+    page_title="Streamlit Chat - Demo",
     page_icon=":robot:"
 )
 
